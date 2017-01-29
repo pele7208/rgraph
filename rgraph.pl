@@ -99,7 +99,7 @@ for my $handle (sort keys %persons) {
 		  push (@{$descendents{$persons{$handle}{childof}}}, $handle);    	
     } else {
       $treename=$handle;
-      $gTree = Tree::DAG_Node::XPath->new({name => $handle, attributes => {name => $persons{$handle}{name}}});
+      $gTree = Tree::DAG_Node::XPath->new({name => $handle, attributes => {name => $persons{$handle}{nick}}});
     }
 }
 # print Dumper \$gTree;
@@ -162,11 +162,11 @@ sub traverse {
     #     " " x 2 x $depth, 'name: "' . $node->attributes->{name} . '",' . "\n";
     $alljsondata .= '{' .
         '"id": "' . $node->name . '",' .
-        '"name": "' . $node->attributes->{nick} . '",';
+        '"name": "' . $node->attributes->{name} . '",';
 
    if ($node->daughters) {
       my @daughters = $node->daughters;
-      my @list = map {$_->name => "<li>$_->nick</li>"} @daughters;
+      my @list = map {$_->name => "<li>$_->name</li>"} @daughters;
       #print @list . "\n";
       my $nodes = $node->daughters; #try to find this node in the tree
       
@@ -183,7 +183,7 @@ sub traverse {
       # print '</ul>"';
       # print " " x $depth, '},' . "\n";
       # print " " x $depth;      
-      $alljsondata .= join('',map {"<li>" . $_->attributes->{nick} . "</li>"} @daughters);
+      $alljsondata .= join('',map {"<li>" . $_->attributes->{name} . "</li>"} @daughters);
       $alljsondata .= '</ul>"';
       $alljsondata .= '},';
     }
